@@ -1,0 +1,160 @@
+// import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useForm } from 'react-hook-form'
+import className from "classnames";
+
+
+function App() {
+  const { register, handleSubmit, errors } = useForm({
+    mode:"all"
+  });
+  console.log(errors);
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+  return (
+    <div className="App">
+      <div className="container py-5">
+        <div className="card border-0 shadow w-100 mx-auto">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="form-group">
+              <div className="col-12">
+                <label >Name</label>
+                <input type="text" 
+                className={className("form-control", {"is-invalid":errors.name})} 
+                placeholder="Enter Your First name" 
+                ref={register({
+                  required: "this field is required", 
+                  minLength:{
+                    value:4,
+                    message:"minimun 4 charter"
+                  }
+                })} 
+                name="name" />
+                { errors.name && (<div className="invalid-feedback">{errors.name.message}</div>)}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-12">
+                <label >Email</label>
+                <input type="text" 
+                className={className("form-control", {"is-invalid":errors.email})} 
+                placeholder="Enter email address" 
+                ref={register({
+                  required: "this field is required", 
+                  pattern: {
+                    value: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: "please enter a valid e-email address"
+                  }
+                })} 
+                name="email" />
+              { errors.email && (<div className="invalid-feedback">{errors.email.message}</div>)}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-12">
+                <label >phone</label>
+                <input type="text" 
+                   className={className("form-control", {"is-invalid":errors.phone})} 
+                placeholder="Enter Your Last name" 
+                ref={register({
+                  required: "this field is required", 
+                  pattern: {
+                    value: /^\d{10}$/,
+                    message: "please enter a valid phone number"
+                  }
+                })} 
+                name="phone"/>
+              { errors.phone && (<div className="invalid-feedback">{errors.phone.message}</div>)}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="col-12">
+                <label >Passowrd</label>
+                <input 
+                type="text" 
+                className={className("form-control", {"is-invalid":errors.password})} 
+                placeholder="Enter Your E-mail Address" 
+                ref={register({
+                  required: "this field is required", 
+                  pattern: {
+                    value: /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+                    message: "UpperCase, LowerCase, Number/SpecialChar and min 8 Chars"
+                  }
+                })} 
+                name="password" />
+                { errors.password && (<div className="invalid-feedback">{errors.password.message}</div>)}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="form-check form-check-inline">
+                <input 
+                className="form-check-input" 
+                type="radio" 
+                id="male" 
+                value="male" 
+                name="gender" 
+                ref={register({required: "this field is required"})} 
+                />
+                <label className="form-check-label" htmlFor="male">male</label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input 
+                className="form-check-input" 
+                type="radio" 
+                id="female" 
+                value="female" 
+                name="gender" 
+                ref={register({required: "this field is required"})} 
+                />
+                <label className="form-check-label" htmlFor="female">female</label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input 
+                className="form-check-input" 
+                type="radio" 
+                id="other" 
+                value="other" 
+                name="gender" 
+                ref={register({required: "this field is required"})} 
+                />
+                <label className="form-check-label" htmlFor="other">other</label>
+                
+              </div>
+           
+               { errors.gender && (<div className="form-text text-danger">{errors.gender.message}</div>)}
+           
+            </div>
+            <div className="form-group">
+              <select 
+              className={className("custom-select", {"is-invalid":errors.state})}
+              name="state" 
+              ref={register({required: "this field is required"})} 
+              >
+                <option value="">Select your state</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Bihar">Bihar</option>
+              </select>
+                { errors.state && (<div className="invalid-feedback">{errors.state.message}</div>)}
+            </div>
+            <div className="form-group">
+              <div className="form-check form-check-inline">
+                <input className="form-check-input" type="checkbox" id="terms" name="trams" value="agree" ref={register} />
+                <label className="form-check-label" htmlFor="terms">I agree all terms and conditons</label>
+              </div>
+              
+            </div>
+
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
