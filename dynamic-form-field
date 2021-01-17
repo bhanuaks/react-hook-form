@@ -1,0 +1,105 @@
+// import './App.css';
+import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useForm, useFieldArray } from 'react-hook-form';
+
+const UserInformation = (props) => {
+  const { register, control } = props;
+  const { append, fields, remove } = useFieldArray({ control, name: "users" });
+  return (
+    <div className="card mb-4">
+      <div className="card-header">User Information</div>
+      <div className="card-body">
+
+        {
+          fields.map((item, index) => (
+            <div className="form-row form-group" key={index}>
+              <div className="col">
+                <input type="text" className="form-control" placeholder="Enter Your First name" name={`users[${index}.firstName]`} ref={register()} defaultValue={item.firstName} />
+              </div>
+              <div className="col">
+                <input type="text" className="form-control" placeholder="Enter Your Last name" name={`users[${index}.lastName]`} ref={register()} defaultValue={item.lastName} />
+              </div>
+              <div className="col">
+                <input type="text" className="form-control" placeholder="Enter Your E-mail Address" name={`users[${index}.emailAddress]`} ref={register()} defaultValue={item.emailAddress} />
+              </div>
+              <div className="col">
+                <select className="form-control" id="state" name={`users[${index}.state]`} defaultValue={item.state} ref={register()}>
+                  <option value="">Select Your State</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Manipur">Manipur</option>
+                </select>
+              </div>
+              <div className="col">
+
+                <button type="button" className="btn btn-danger" onClick={() => remove(index)}>add user</button>
+              </div>
+
+            </div>
+
+          ))
+        }
+
+        <div className="col">
+          <button type="button" className="btn btn-primary" onClick={() => append({ firstName: "", lastName: "", emailAddress: "", state: "" })}>add user</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+function App() {
+  const { register, handleSubmit, control } = useForm();
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+
+  const basicForm = (
+    <>
+
+      <div className="card-header">User Information</div>
+      <div className="form-group">
+        <label htmlFor="fullname">Full Name</label>
+        <input type="text" className="form-control" name="fullname" ref={register} id="fullname" />
+      </div>
+      <div className="form-group">
+        <label htmlFor="email">Email address</label>
+        <input type="email" className="form-control" id="email" name="email" ref={register} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="phone">Phone Number</label>
+        <input type="text" className="form-control" id="phone" name="phone" ref={register} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="password">Password</label>
+        <input type="password" className="form-control" id="password" name="password" ref={register} />
+      </div>
+
+    </>
+  )
+
+  return (
+    <div className="App">
+      <div className="App">
+        <div className="container py-5">
+          <form onSubmit={handleSubmit(onSubmit)}>
+
+            <div className="card mb-4">
+              {basicForm}
+              <UserInformation register={register} control={control} />
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
